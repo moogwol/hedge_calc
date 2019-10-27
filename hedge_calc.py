@@ -1,24 +1,48 @@
-# inputs
-hedge_required = int(input('What is the hedge required? '))
-existing_hedge = int(input('What is the existing hedge? '))
-VIF = int(input('What is the VIF? '))
-tolerance = 250000
+from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QVBoxLayout,
+                             QLineEdit, QPushButton)
+import sys
 
-# outputs
-hedge_to_place = None
+class GuiWidget(QWidget):
 
-# If the hedge required is greater than the VIF and the VIF the existing hedge is equal to or greater than 250000
-if (hedge_required >= VIF) and (abs(VIF - existing_hedge) >= tolerance):
-    # Then the hedge to place is equal to the VIF - existing hedge
-    hedge_to_place = VIF - existing_hedge
-    print(f"Hedge to place: {hedge_to_place}")
-# Else if the hedge required is less than the VIF and the hedge required - the existing hedge is equal to or greater
-# than 250000
-elif (hedge_required < VIF) and (abs(hedge_required - existing_hedge) >= tolerance):
-    # Then the hedge to place is equal to the hedge required - existing hedge
-    hedge_to_place = (hedge_required - existing_hedge)
-    print(f"Hedge_to_place: {hedge_to_place}")
+    def __init__(self, *args, **kwargs):
+        super(QWidget, self).__init__(*args, **kwargs)
 
-# Otherwise don't place a hedge
-else:
-    print("No hedge required")
+        self.setWindowTitle('Cath\'s Hedge Calculator')
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+
+        welcome_label = QLabel('Welcome to Cath\'s <h1>Hedge Calculator</h1>')
+        layout.addWidget(welcome_label)
+
+        # Allows the user to input the hedge required
+        hedge_required = QLineEdit()
+        hedge_required.setPlaceholderText('Hedge Required')
+        layout.addWidget(hedge_required)
+
+        # Allows the user to input the existing hedge
+        existing_hedge = QLineEdit()
+        existing_hedge.setPlaceholderText('Existing hedge')
+        layout.addWidget(existing_hedge)
+
+        # Allows the user to input the VIF
+        VIF = QLineEdit()
+        VIF.setPlaceholderText('VIF')
+        layout.addWidget(VIF)
+
+        # A button to get the hedge_to_place
+        button = QPushButton('Calculate Hedge')
+        layout.addWidget(button)
+
+
+
+
+
+
+
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    window = GuiWidget()
+    window.show()  # Show the window
+    app.exec_()  # Start the event loop
