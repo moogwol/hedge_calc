@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QVBoxLayout,
                              QLineEdit, QPushButton)
 import sys
-from .maths import calculate_hedge_to_place
+from calculation import HedgeCalculator
+
 
 class GuiWidget(QWidget):
 
@@ -39,26 +40,19 @@ class GuiWidget(QWidget):
         layout.addWidget(button)
 
         # A label which shows the hedge to place
-        self.hedge_to_place = QLabel("")
+        self.hedge_to_place = QLabel()
         layout.addWidget(self.hedge_to_place)
 
-
     def calculate_hedge(self):
+        """Uses the user inputted value to calculate the hedge to place"""
+        hc = HedgeCalculator()
         hr = int(self.hedge_required.text())
         eh = int(self.existing_hedge.text())
         vif = int(self.VIF.text())
         tol = 250000
-        htp = calculate_hedge_to_place(hr, eh, vif, tol)
-
-
-        self.hedge_to_place.setText(str(htp))
-
-
-
-
-
-
-
+        htp = hc.calculate_hedge_to_place(hr, eh, vif, tol)
+        # Update the label with the value of the hedge to place
+        self.hedge_to_place.setText(f"Hedge to place: <h3>{str(htp)}</h3>")
 
 
 if __name__ == '__main__':
